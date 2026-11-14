@@ -1,10 +1,10 @@
 """어데닉 로고를 글리프로 — 워드마크(U+F8F0)와 A 심볼(U+F8F1).
 
-외곽선은 어데닉 저장소의 원본 SVG를 그대로 옮겼다.
-  워드마크: web/studio/app/public/static/AUDENIQ_Logo_Light.svg
-  A 심볼:   web/studio/app/public/static/favicon.svg
-색이 있는 부분(Q 꼬리 그라데이션, A 가로획 파랑)은 COLRv1 층으로 남기고, 나머지는 글자 색을 따른다.
-COLRv1을 못 읽는 사파리는 COLRv0 층으로 본체는 글자 색, 꼬리·가로획은 파랑(한 색)으로 보인다.
+외곽선은 어데닉 저장소의 새 로고(2026-11 정리, docs/brand/LOGO.md)를 그대로 옮겼다.
+  워드마크: docs/brand/logo/wordmark-color.svg (= 앱의 AUDENIQ_Logo_Light.svg)
+  A 심볼:   docs/brand/logo/mark.svg (= 앱의 favicon.svg에서 타일을 뺀 것)
+색이 있는 부분(Q 꼬리 그라데이션, A 막대 파랑)은 COLRv1 층으로 남기고, 나머지는 글자 색을 따른다.
+COLRv1을 못 읽는 사파리는 COLRv0 층으로 본체는 글자 색, 꼬리·막대는 한 색으로 보인다.
 """
 from fontTools.colorLib.builder import buildCOLR, buildCPAL
 from fontTools.misc.transform import Transform
@@ -21,33 +21,32 @@ from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphComponent
 WORDMARK_CP = 0xF8F0
 MARK_CP = 0xF8F1
 
-# AUDENIQ_Logo_Light.svg (viewBox 24 0 1060 182). 글자 기준선 y=168, 대문자 윗선 y=14.
+# wordmark-color.svg (viewBox 0 0 1060 182). 글자 기준선 y=168, 대문자 윗선 y=14(오버슛 위아래 3).
 WORDMARK_BODY = [
-    "M40 168 H69 L107 62 L145 168 H175 L123 26 Q118 14 107 14 Q96 14 91 26 Z",  # A
-    "M196 14 H224 V106 C224 131 236 143 259.5 143 C282.5 143 295 130 295 106 V14 H323 V106 "
-    "C323 146 299 169 259.5 169 C220 169 196 145 196 106 Z",  # U
-    "M349 14 H404 C450 14 483 43 483 91 C483 139 450 168 404 168 H349 V141 H404 "
-    "C436 141 455 122 455 91 C455 60 436 40 404 40 H349 Z",  # D
-    "M510 14 H625 V40 H510 Z",  # E 윗획(떨어져 있음)
-    "M510 76 H614 V102 H539 V141 H625 V168 H510 Z",  # E 몸
-    "M647 168 V14 H655 L759 109 V14 H787 V168 H779 L675 76 V168 Z",  # N
-    "M809 14 H837 V168 H809 Z",  # I
-    "M956 8 C1004 8 1041 45 1041 90 C1041 105 1037 118 1030 129 L1009 108 C1011 102 1013 96 1013 90 "
-    "C1013 58 988 35 956 35 C924 35 900 59 900 90 C900 121 924 146 956 146 C961 146 965 146 969 145 "
-    "L990 166 C980 171 968 173 956 173 C909 173 872 136 872 90 C872 45 909 8 956 8 Z",  # Q
+    "M22.5 168L75.13 21.46A15.8 15.8 0 0 1 104.87 21.46L157.5 168H127.5L90 63.59L52.5 168Z",  # A
+    "M175.5 14H203.5V106C203.5 129.4 217.7 145 239 145C260.3 145 274.5 129.4 274.5 106V14H302.5V106"
+    "C302.5 145 277.1 171 239 171C200.9 171 175.5 145 175.5 106Z",  # U
+    "M323.5 14H378.5C425.9 14 457.5 44.8 457.5 91C457.5 137.2 425.9 168 378.5 168H323.5V142H378.5"
+    "C408.5 142 428.5 121.6 428.5 91C428.5 60.4 408.5 40 378.5 40H323.5Z",  # D
+    "M480.5 14H595.5V40H480.5Z",  # E 윗획(떨어져 있음)
+    "M480.5 78H584.5V104H508.5V142H595.5V168H480.5Z",  # E 몸
+    "M621.5 168V14H629.5L733.5 110V14H761.5V168H753.5L649.5 72V168Z",  # N
+    "M799.5 14H827.5V168H799.5Z",  # I
+    "M1011.22 127.75A83 80 0 1 0 972.89 163.36L952.43 142.9A54 54 0 1 1 989.4 105.93Z",  # Q
 ]
-WORDMARK_TAIL = ["M948 106 H991 L1057 172 H1014 Z"]  # Q 꼬리(그라데이션)
+WORDMARK_TAIL = ["M932.5 106H972.5L1037.5 171H997.5Z"]  # Q 꼬리(그라데이션)
 WORDMARK_BASE, WORDMARK_TOP = 168, 14
-WORDMARK_LEFT, WORDMARK_RIGHT = 40, 1057
-# 그라데이션: #35BAEF → #4286F4 → #791EFF, (955,102)에서 (1064,172)로
-ACCENT_STOPS = [(0.0, "#35BAEF"), (0.5, "#4286F4"), (1.0, "#791EFF")]
-ACCENT_FROM, ACCENT_TO = (955, 102), (1064, 172)
+WORDMARK_LEFT, WORDMARK_RIGHT = 22.5, 1037.5
+# 그라데이션: #3B63F3(--aq-blue-500) → #7A5AF8(--aq-violet-500), (932.5,106)에서 (1037.5,171)로
+ACCENT_STOPS = [(0.0, "#3B63F3"), (1.0, "#7A5AF8")]
+ACCENT_FROM, ACCENT_TO = (932.5, 106), (1037.5, 171)
+ACCENT_FLAT = "#5B5EF6"  # 사파리(COLRv0)용 꼬리 한 색: 두 끝 색의 가운데
 
-# favicon.svg (viewBox 0 0 64 64). A 바닥 y=52, 꼭대기 곡선 y≈5.
-MARK_BODY = ["M7 52 25 10 Q31 0 37 10 L57 52 H45 L31 21 19 52 Z"]
-MARK_BAR = ["M25 37 H39 L43 47 H21 Z"]
-MARK_BAR_COLOR = "#3182F6"
-MARK_BASE, MARK_TOP = 52, 5
+# mark.svg (64 격자). A 바닥 y=56, 꼭짓점 곡선 위 y≈8. 막대는 다리 밑에 깐다(먼저 그림).
+MARK_BODY = ["M7 56L25.08 12.62A7.5 7.5 0 0 1 38.92 12.62L57 56H45L32 24.8L19 56Z"]
+MARK_BAR = ["M24.17 40H39.83L44 50H20Z"]
+MARK_BAR_COLOR = "#3B63F3"
+MARK_BASE, MARK_TOP = 56, 8
 MARK_LEFT, MARK_RIGHT = 7, 57
 
 SIDE = 60  # 로고 양옆 여백(유닛)
@@ -123,8 +122,8 @@ def add_logo_glyphs(font):
             table.cmap[WORDMARK_CP] = "aq.wordmark"
             table.cmap[MARK_CP] = "aq.mark"
 
-    # 팔레트: 0–2 그라데이션, 3 심볼 파랑. 0xFFFF = 지금 글자 색.
-    palette = [_hex(c) for _, c in ACCENT_STOPS] + [_hex(MARK_BAR_COLOR)]
+    # 팔레트: 0–1 그라데이션, 2 심볼 막대 파랑, 3 사파리용 꼬리 한 색. 0xFFFF = 지금 글자 색.
+    palette = [_hex(c) for _, c in ACCENT_STOPS] + [_hex(MARK_BAR_COLOR), _hex(ACCENT_FLAT)]
     font["CPAL"] = buildCPAL([palette])
     fg = {"Format": ot.PaintFormat.PaintSolid, "PaletteIndex": 0xFFFF, "Alpha": 1.0}
     # 그라데이션 축과 수직인 점 p2: p0에서 (p1-p0)을 90도 돌린 방향
@@ -136,7 +135,7 @@ def add_logo_glyphs(font):
         "x0": round(g0[0]), "y0": round(g0[1]), "x1": round(g1[0]), "y1": round(g1[1]),
         "x2": round(g0[0] - dy), "y2": round(g0[1] + dx),
     }
-    bar = {"Format": ot.PaintFormat.PaintSolid, "PaletteIndex": 3, "Alpha": 1.0}
+    bar = {"Format": ot.PaintFormat.PaintSolid, "PaletteIndex": 2, "Alpha": 1.0}
 
     def layers(*pairs):
         return {"Format": ot.PaintFormat.PaintColrLayers,
@@ -145,13 +144,13 @@ def add_logo_glyphs(font):
     glyph_map = font.getReverseGlyphMap(rebuild=True)
     colr = buildCOLR({
         "aq.wordmark": layers(("aq.wordmark.body", fg), ("aq.wordmark.tail", gradient)),
-        "aq.mark": layers(("aq.mark.body", fg), ("aq.mark.bar", bar)),
+        "aq.mark": layers(("aq.mark.bar", bar), ("aq.mark.body", fg)),  # 막대를 다리 밑에
     }, version=1, glyphMap=glyph_map)
     # 사파리는 COLRv1(그라데이션)을 못 읽는다. 같은 글리프에 COLRv0 층(한 색)을 함께 넣으면
-    # v1을 읽는 브라우저는 v1을, 사파리는 v0을 쓴다. 꼬리는 그라데이션 가운데 색(#4286F4).
+    # v1을 읽는 브라우저는 v1을, 사파리는 v0을 쓴다. 꼬리는 그라데이션 가운데 색(ACCENT_FLAT).
     v0 = {
-        "aq.wordmark": [("aq.wordmark.body", 0xFFFF), ("aq.wordmark.tail", 1)],
-        "aq.mark": [("aq.mark.body", 0xFFFF), ("aq.mark.bar", 3)],
+        "aq.wordmark": [("aq.wordmark.body", 0xFFFF), ("aq.wordmark.tail", 3)],
+        "aq.mark": [("aq.mark.bar", 2), ("aq.mark.body", 0xFFFF)],
     }
     t = colr.table
     bases, lays = [], []
